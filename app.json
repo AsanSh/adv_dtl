@@ -1,0 +1,47 @@
+{
+  "name": "DTL Logistics Platform",
+  "description": "Logistics platform with Telegram WebApp integration",
+  "keywords": [
+    "logistics",
+    "telegram",
+    "fastapi",
+    "mongodb"
+  ],
+  "repository": "https://github.com/yourusername/dtl-logistics",
+  "env": {
+    "MONGODB_URL": {
+      "description": "MongoDB connection string",
+      "required": true
+    },
+    "TELEGRAM_BOT_TOKEN": {
+      "description": "Telegram bot token",
+      "required": true
+    },
+    "SECRET_KEY": {
+      "description": "Secret key for JWT tokens",
+      "generator": "secret"
+    },
+    "WEBAPP_URL": {
+      "description": "URL of your deployed WebApp",
+      "value": "https://advestor-dtl-96958b770deb.herokuapp.com"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "standard-1x"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "standard-1x"
+    }
+  },
+  "addons": [
+    "mongolab:sandbox"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+} 

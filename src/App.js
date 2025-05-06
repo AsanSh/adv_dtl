@@ -1,31 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import './App.css';
+import ProfileTab from "./components/ProfileTab";
+import WelcomeScreen from "./components/WelcomeScreen";
+import ApplicationsTab from "./components/ApplicationsTab";
 
-function ApplicationsTab() {
-  return <div>Заявки (реализуйте логику отображения заявок)</div>;
-}
 function ClosedTab() {
   return <div>Закрытые заявки (реализуйте логику отображения закрытых заявок)</div>;
 }
 function AnalyticsTab() {
   return <div>Аналитика (реализуйте аналитику и графики)</div>;
 }
-function ProfileTab() {
-  return <div>Профиль (реализуйте профиль, заявки на вступление и сотрудников)</div>;
-}
-function RegistrationScreen() {
-  return <div>Регистрация (реализуйте форму регистрации/вступления)</div>;
-}
 
 function App() {
   const [tab, setTab] = useState(0);
-  const [user, setUser] = useState(true); // Поставьте false для теста экрана регистрации
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      fetch("https://advestor-dtl-96958b770deb.herokuapp.com/api/users/me", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => setUser(data))
+        .catch(() => setUser(null));
+    }
+  }, []);
 
   if (!user) {
-    return <RegistrationScreen setUser={setUser} />;
+    return <WelcomeScreen setUser={setUser} />;
   }
 
   return (
@@ -36,10 +42,10 @@ function App() {
         <Tab label="Аналитика" />
         <Tab label="Профиль" />
       </Tabs>
-      {tab === 0 && <ApplicationsTab />}
+      {tab === 0 && <ApplicationsTab user={user} />}
       {tab === 1 && <ClosedTab />}
       {tab === 2 && <AnalyticsTab />}
-      {tab === 3 && <ProfileTab />}
+      {tab === 3 && <ProfileTab user={user} setUser={setUser} />}
     </Box>
   );
 }

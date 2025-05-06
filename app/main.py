@@ -21,7 +21,7 @@ app = FastAPI(title="DTL Logistics Platform")
 # CORS middleware configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://adv-dtl.web.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
